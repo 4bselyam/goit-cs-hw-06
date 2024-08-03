@@ -1,0 +1,27 @@
+version: '3.8'
+services:
+  app:
+    build: .
+    ports:
+      - '3000:3000'
+      - '5555:5555'
+    depends_on:
+      - mongo
+    volumes:
+      - .:/app
+      - static_volume:/app/static
+  mongo:
+    image: mongo:latest
+    ports:
+      - '27017:27017'
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: admin
+      MONGO_INITDB_ROOT_PASSWORD: password
+      MONGO_INITDB_DATABASE: message_db
+    volumes:
+      - mongo_volume:/data/db
+    command: ['mongod', '--auth']
+
+volumes:
+  static_volume:
+  mongo_volume:
